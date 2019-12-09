@@ -1,0 +1,8 @@
+{
+    "GetArticlesByAuthor":"/v3/articles/GetArticlesByAuthor",
+    "GetArticlesByName":"/v3/articles/GetArticlesByName",
+    "GetArticlesByTag":"/v3/articles/GetArticlesByTag",
+    "LogOut":"/v3/user/logout",
+    "SignIn":"/v3/user/sign_in",
+    "SignUp":"/v3/user/sign_up"
+}

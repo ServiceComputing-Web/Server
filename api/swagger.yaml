@@ -1,0 +1,244 @@
+---
+swagger: "2.0"
+info:
+  description: "This is a sample Blog server. "
+  version: "1.0.0"
+  title: "Minimalist Blog"
+basePath: "/v3"
+tags:
+- name: "articles"
+  description: "Article Resources"
+- name: "tags"
+  description: "Article Tags"
+- name: "reviews"
+  description: "Article Reviews"
+- name: "user"
+  description: "Operations about user"
+schemes:
+- "https"
+- "http"
+paths:
+  /articles/GetArticlesByAuthor:
+    get:
+      tags:
+      - "articles"
+      summary: "Get articles by author"
+      description: ""
+      operationId: "GetArticlesByAuthor"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "articleAuthor"
+        in: "query"
+        description: "The author of the article"
+        required: false
+        type: "string"
+        x-exportParamName: "ArticleAuthor"
+        x-optionalDataType: "String"
+      - name: "pageSize"
+        in: "query"
+        description: "Number of articles returned"
+        required: false
+        type: "integer"
+        x-exportParamName: "PageSize"
+        x-optionalDataType: "Int32"
+      - name: "pageNumber"
+        in: "query"
+        description: "Page number"
+        required: false
+        type: "integer"
+        x-exportParamName: "PageNumber"
+        x-optionalDataType: "Int32"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Articles"
+        "400":
+          description: "Invalid query"
+  /articles/GetArticlesByName:
+    get:
+      tags:
+      - "articles"
+      summary: "Get articles by name"
+      description: ""
+      operationId: "GetArticlesByName"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "articleName"
+        in: "query"
+        description: "The name of the article"
+        required: false
+        type: "string"
+        x-exportParamName: "ArticleName"
+        x-optionalDataType: "String"
+      - name: "pageSize"
+        in: "query"
+        description: "Number of articles returned"
+        required: false
+        type: "integer"
+        x-exportParamName: "PageSize"
+        x-optionalDataType: "Int32"
+      - name: "pageNumber"
+        in: "query"
+        description: "Page number"
+        required: false
+        type: "integer"
+        x-exportParamName: "PageNumber"
+        x-optionalDataType: "Int32"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Articles"
+        "400":
+          description: "Invalid query"
+  /articles/GetArticlesByTag:
+    get:
+      tags:
+      - "articles"
+      summary: "Get articles by tag"
+      description: ""
+      operationId: "GetArticlesByTag"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "articleTag"
+        in: "query"
+        description: "The tag of the article"
+        required: false
+        type: "string"
+        x-exportParamName: "ArticleTag"
+        x-optionalDataType: "String"
+      - name: "pageSize"
+        in: "query"
+        description: "Number of articles returned"
+        required: false
+        type: "integer"
+        x-exportParamName: "PageSize"
+        x-optionalDataType: "Int32"
+      - name: "pageNumber"
+        in: "query"
+        description: "Page number"
+        required: false
+        type: "integer"
+        x-exportParamName: "PageNumber"
+        x-optionalDataType: "Int32"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Articles"
+        "400":
+          description: "Invalid query"
+  /user/sign_up:
+    post:
+      tags:
+      - "user"
+      summary: "Create user"
+      description: "Create a user."
+      operationId: "signUp"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+        x-exportParamName: "Body"
+      responses:
+        "200":
+          description: "successful operation"
+        "400":
+          description: "Invalid username/password supplied"
+  /user/sign_in:
+    get:
+      tags:
+      - "user"
+      summary: "Logs user into the system"
+      description: "Logs user into the system"
+      operationId: "signIn"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+        x-exportParamName: "Username"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
+        x-exportParamName: "Password"
+      responses:
+        "200":
+          description: "successful operation"
+          headers:
+            X-Rate-Limit:
+              type: "integer"
+              format: "int32"
+              description: "calls per hour allowed by the user"
+            X-Expires-After:
+              type: "string"
+              format: "date-time"
+              description: "date in UTC when token expires"
+          schema:
+            type: "string"
+        "400":
+          description: "Invalid username/password supplied"
+  /user/logout:
+    get:
+      tags:
+      - "user"
+      summary: "Logs out current logged in user session"
+      description: ""
+      operationId: "logOut"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters: []
+      responses:
+        default:
+          description: "successful operation"
+definitions:
+  Article:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      tag:
+        type: "string"
+      author:
+        type: "string"
+      content:
+        type: "string"
+      review:
+        type: "string"
+    xml:
+      name: "Article"
+  Articles:
+    xml:
+      name: "Articles"
+    type: "array"
+    items:
+      $ref: "#/definitions/Article"
+  User:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      password:
+        type: "string"
+    xml:
+      name: "User"
